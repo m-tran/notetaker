@@ -6,10 +6,8 @@ module.exports = {
         try {
             console.log("api has been hit!");
             fs.readFile('./db/db.json', function read(err, data) {
-                if (err) {
-                    throw err;
-                }
-                content = JSON.parse(data);x
+                if (err) { throw err; }
+                content = JSON.parse(data);
                 res.json(content);
             });
         } catch (err) {
@@ -21,15 +19,14 @@ module.exports = {
     newNote: async (req, res) => {
         try {
             console.log("posted!");
-            let notesData = fs.readFileSync("../db/db.json");
-            notesData = JSON.parse(notesData);
-    
             let body = req.body;
-            notesData.push(body);
-    
-            fs.writeFileSync("../db/db.json", JSON.stringify(notesData, null, 2));
-            console.log("sent!");
-            res.send(notesData);
+            await fs.readFile('./db/db.json', function read(err, data) {
+                if (err) { throw err; }
+                content = JSON.parse(data);
+            });
+            await content.push(body);
+            fs.writeFileSync("./db/db.json", JSON.stringify(content, null, 2));
+            res.send(content);
         } catch (err) {
             res.send(err);
         }
