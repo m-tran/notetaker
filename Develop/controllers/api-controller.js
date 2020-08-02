@@ -5,9 +5,13 @@ module.exports = {
     getNotes: async (req, res) => {
         try {
             console.log("api has been hit!");
-            let notesData = await fs.readFileSync("db.json", "utf8");
-            notesData = await JSON.parse(notesData);
-            res.json(notesData);
+            fs.readFile('./db/db.json', function read(err, data) {
+                if (err) {
+                    throw err;
+                }
+                content = JSON.parse(data);x
+                res.json(content);
+            });
         } catch (err) {
             res.send(err);
         }
@@ -17,13 +21,14 @@ module.exports = {
     newNote: async (req, res) => {
         try {
             console.log("posted!");
-            let notesData = await fs.readFileSync("db.json", "utf8");
-            notesData = await JSON.parse(notesData);
+            let notesData = fs.readFileSync("../db/db.json");
+            notesData = JSON.parse(notesData);
     
-            let body = await req.body;
+            let body = req.body;
             notesData.push(body);
     
-            await fs.writeFileSync("db.json", JSON.stringify(body, null, 2));
+            fs.writeFileSync("../db/db.json", JSON.stringify(notesData, null, 2));
+            console.log("sent!");
             res.send(notesData);
         } catch (err) {
             res.send(err);
@@ -35,7 +40,7 @@ module.exports = {
         try {
             console.log("success!");
 
-            let notesData = await fs.readFileSync("db.json", "utf8");
+            let notesData = await fs.readFileSync("../db/db.json", "utf8");
             notesData = await JSON.parse(notesData);
     
             await fs.writeFileSync("db.json", JSON.stringify(body, null, 2));
