@@ -43,8 +43,10 @@ module.exports = {
                 if (err) { throw err; }
                 content = JSON.parse(data);
             });
-            fs.writeFileSync("db.json", JSON.stringify(body, null, 2));
-            res.send(notesData);
+            let key = await req.params.id;
+            content = await content.splice(key, 1);
+            fs.writeFileSync('./db/db.json', JSON.stringify(content, null, 2));
+            res.send(content);
         } catch (err) {
             res.send(err);
         }  
