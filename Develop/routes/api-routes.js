@@ -7,6 +7,6 @@ const {
 
 router.get("/api/notes", getNotes);
 router.post("/api/notes", newNote);
-router.delete("/api/notes", deleteNote);
+router.delete("/api/notes/:id", deleteNote);
 
 module.exports = router;

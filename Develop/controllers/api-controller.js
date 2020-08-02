@@ -25,6 +25,9 @@ module.exports = {
                 content = JSON.parse(data);
             });
             await content.push(body);
+            let key = await content.length;
+            content[key-1].id = await key;
+            await console.log(content[key-1]);
             fs.writeFileSync("./db/db.json", JSON.stringify(content, null, 2));
             res.send(content);
         } catch (err) {
@@ -36,11 +39,11 @@ module.exports = {
     deleteNote: async (req, res) => {
         try {
             console.log("success!");
-
-            let notesData = await fs.readFileSync("../db/db.json", "utf8");
-            notesData = await JSON.parse(notesData);
-    
-            await fs.writeFileSync("db.json", JSON.stringify(body, null, 2));
+            await fs.readFile('./db/db.json', function read(err, data) {
+                if (err) { throw err; }
+                content = JSON.parse(data);
+            });
+            fs.writeFileSync("db.json", JSON.stringify(body, null, 2));
             res.send(notesData);
         } catch (err) {
             res.send(err);
